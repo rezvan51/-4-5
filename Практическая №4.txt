@@ -1,0 +1,91 @@
+CREATE DATABASE Yagudin_P36
+
+CREATE TABLE Òîâàð(
+ÊîäÒîâàðà INT IDENTITY(1,1) PRIMARY KEY,
+Íàçâàíèå VARCHAR(50),
+Öåíà MONEY,
+Òèï VARCHAR(50),
+Ñîðò VARCHAR(50),
+Ãîðîä VARCHAR(50),
+Îñòàòîê INT
+);
+
+
+CREATE TABLE Ñîòðóäíèêè(
+Ôàìèëèÿ CHAR(10),
+Èìÿ CHAR(10),
+Ãîðîä CHAR(10),
+PRIMARY KEY (Ôàìèëèÿ, Èìÿ)
+);
+
+
+CREATE TABLE Ñîòðóäíèêè2(
+Ôàìèëèÿ CHAR(10),
+Èìÿ CHAR(10),
+Ãîðîä CHAR(10),
+Äîëæíîñòü CHAR(10) NOT NULL,
+PRIMARY KEY (Ôàìèëèÿ, Èìÿ)
+);
+
+
+CREATE TABLE Ñîòðóäíèêè3(
+Ôàìèëèÿ CHAR(10) NOT NULL UNIQUE,
+Èìÿ CHAR(10) NOT NULL UNIQUE,
+Ãîðîä CHAR(10),
+Äîëæíîñòü CHAR(10) NOT NULL,
+PRIMARY KEY (Ôàìèëèÿ, Èìÿ),
+);
+
+
+CREATE TABLE Ñîòðóäíèêè4(
+Ôàìèëèÿ CHAR(10) NOT NULL UNIQUE,
+Èìÿ CHAR(10) NOT NULL UNIQUE,
+Ãîðîä CHAR(10) DEFAULT 'Ìîñêâà',
+Äîëæíîñòü CHAR(10) NOT NULL,
+PRIMARY KEY (Ôàìèëèÿ, Èìÿ)
+);
+
+
+CREATE TABLE Ïðîäàâöû(
+ÊîäÏðîäàâöà INTEGER NOT NULL PRIMARY KEY,
+Ôàìèëèÿ CHAR(10) NOT NULL UNIQUE,
+Ãîðîä CHAR(10),
+Êîìèññèîííûå DECIMAL CHECK(Êîìèññèîííûå < 1)
+);
+
+
+CREATE TABLE Ïðîäàâöû2(
+ÊîäÏðîäàâöà INTEGER NOT NULL PRIMARY KEY,
+Ôàìèëèÿ CHAR(10) NOT NULL UNIQUE,
+Ãîðîä CHAR(10),
+Êîìèññèîííûå DECIMAL CHECK(Êîìèññèîííûå < 1)
+);
+
+CREATE TABLE Êëèåíò(
+ÊîäÊëèåíòà INT IDENTITY(1,1) PRIMARY KEY,
+Ôèðìà  VARCHAR(50) NOT NULL,
+Ôàìèëèÿ VARCHAR(50) NOT NULL,
+Ãîðîä VARCHAR(50) NOT NULL,
+Òåëåôîí CHAR(10) NOT NULL,
+CHECK (Òåëåôîí LIKE '|1-9||0-9|-|0-9||0-9|-|0-9||0-9|'));
+
+
+CREATE TABLE Ñäåëêà(
+ÊîäÑäåëêè INT IDENTITY(1,1) PRIMARY KEY,
+ÊîäÒîâàðà INT NOT NULL,
+ÊîäÊëèåíòà INT NOT NULL,
+Êîëè÷åñòâî INT NOT NULL DEFAULT 0,
+Äàòà DATETIME NOT NULL DEFAULT GETDATE(),
+Îñòàòîê INT,
+CONSTRAINT fk_Òîâàð FOREIGN KEY (ÊîäÒîâàðà) REFERENCES Òîâàð,
+CONSTRAINT fk_Êëèåíò FOREIGN KEY (ÊîäÊëèåíòà) REFERENCES Êëèåíò);
+
+ALTER TABLE Ñäåëêà DROP CONSTRAINT fk_Òîâàð;
+
+ALTER TABLE Ñäåëêà ADD CONSTRANT fk_Òîâàð
+FOREIGN KEY (ÊîäÒîâàðà) REFERENCES Òîâàð
+ON UPDATE CASCADE ON DELETE CASCADE
+
+ALTER TABLE Òîâàð ADD Íàëîã AS Öåíà*0.05
+
+ALTER TABLE Òîâàð DROP COLUMN Îñòàòîê
